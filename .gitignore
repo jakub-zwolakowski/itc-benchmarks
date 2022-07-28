@@ -42,3 +42,4 @@ config.status
 .vscode
 *.pyc
 tis_misra_report
+.tis-kernel

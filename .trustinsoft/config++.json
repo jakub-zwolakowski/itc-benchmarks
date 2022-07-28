@@ -1,0 +1,82 @@
+[
+    {
+        "name": "improper_error_handling 001 (expected: UB)",
+        "include": "common_config++.json",
+        "prefix_path": "../03.w_Defects_Cpp",
+        "files": [
+            "main.cpp",
+            "improper_error_handling.cpp"
+        ],
+        "val-args": " 1001"
+    },
+    {
+        "name": "improper_error_handling 002 (expected: UB)",
+        "include": "common_config++.json",
+        "prefix_path": "../03.w_Defects_Cpp",
+        "files": [
+            "main.cpp",
+            "improper_error_handling.cpp"
+        ],
+        "val-args": " 1002"
+    },
+    {
+        "name": "improper_error_handling 003 (expected: UB)",
+        "include": "common_config++.json",
+        "prefix_path": "../03.w_Defects_Cpp",
+        "files": [
+            "main.cpp",
+            "improper_error_handling.cpp"
+        ],
+        "val-args": " 1003"
+    },
+    {
+        "name": "improper_error_handling 004 (expected: UB)",
+        "include": "common_config++.json",
+        "prefix_path": "../03.w_Defects_Cpp",
+        "files": [
+            "main.cpp",
+            "improper_error_handling.cpp"
+        ],
+        "val-args": " 1004"
+    },
+    {
+        "name": "improper_error_handling 001 (expected: OK)",
+        "include": "common_config++.json",
+        "prefix_path": "../04.wo_Defects_Cpp",
+        "files": [
+            "main.cpp",
+            "improper_error_handling.cpp"
+        ],
+        "val-args": " 1001"
+    },
+    {
+        "name": "improper_error_handling 002 (expected: OK)",
+        "include": "common_config++.json",
+        "prefix_path": "../04.wo_Defects_Cpp",
+        "files": [
+            "main.cpp",
+            "improper_error_handling.cpp"
+        ],
+        "val-args": " 1002"
+    },
+    {
+        "name": "improper_error_handling 003 (expected: OK)",
+        "include": "common_config++.json",
+        "prefix_path": "../04.wo_Defects_Cpp",
+        "files": [
+            "main.cpp",
+            "improper_error_handling.cpp"
+        ],
+        "val-args": " 1003"
+    },
+    {
+        "name": "improper_error_handling 004 (expected: OK)",
+        "include": "common_config++.json",
+        "prefix_path": "../04.wo_Defects_Cpp",
+        "files": [
+            "main.cpp",
+            "improper_error_handling.cpp"
+        ],
+        "val-args": " 1004"
+    }
+]

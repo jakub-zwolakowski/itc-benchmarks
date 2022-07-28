@@ -1,0 +1,9 @@
+{
+    "val" : true,
+    "val-profile" : "interpreter",
+    "val-timeout": 200,
+    "machdep": "gcc_x86_32",
+    "remove-volatile": true,
+    "disable-exn": false,
+    "cxx-cpp-extra-args": "-Iinclude"
+}
