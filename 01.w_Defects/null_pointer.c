@@ -279,6 +279,15 @@ void null_pointer_016()
 	null_pointer_016_gbl_doubleptr=NULL;
 goto label;
 
+#ifdef __TRUSTINSOFT_BUGFIX__
+	/*
+	 * FAULTY TEST:
+	 * The statement where the error should be detected can never be reached
+	 * in this program. A label must be added here and we must jump to it
+	 * later on in order to reach it.
+	 */
+my_label_UB:
+#endif
     if(null_pointer_016_func_001(flag)==ZERO)
 	{
 		for(i=0;i<10;i++)
@@ -293,12 +302,17 @@ goto label;
 	    free(null_pointer_016_gbl_doubleptr);
 	    null_pointer_016_gbl_doubleptr = NULL;
 	}
-
+#ifdef __TRUSTINSOFT_BUGFIX__
+	return;
+#endif
 label:
     	if(null_pointer_016_func_001(flag)!=ZERO)
     	{
     		null_pointer_016_func_002();
     	}
+#ifdef __TRUSTINSOFT_BUGFIX__
+	goto my_label_UB;
+#endif
 }
 
 /*

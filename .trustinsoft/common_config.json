@@ -1,0 +1,13 @@
+{
+    "val" : true,
+    "val-profile" : "interpreter",
+    "val-timeout": 200,
+    "machdep": "gcc_x86_32",
+    // "remove-volatile": true,
+    "warn-signed-downcast": true,
+    "warn-signed-overflow": true,
+    "warn-unsigned-downcast": true,
+    "warn-unsigned-overflow": true,
+    "cpp-extra-args": "-I../include",
+    "files": [ "stub.c" ]
+}

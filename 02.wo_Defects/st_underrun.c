@@ -50,7 +50,18 @@ void st_underrun_002_func_001 (st_underrun_002_s_001 s)
 	 int len = strlen(s.buf) - 1;
 	 for (;s.buf[len] != 'Z';len--)  /*Tool should not detect this line as error*/ /* No Stack Under RUN error */
 	 {
+	#ifdef __TRUSTINSOFT_BUGFIX__
+	    /* 
+	     * FAULTY TEST:
+	     * This might be a misunderstanding of the for loop semantics.
+	     * In this code, the for loop condition "s.buf[len] != 'Z'" will be
+	     * evaluated one last time for "len" equal -1, thus causing unintended
+	     * Undefined Behavior.
+	     */
+	    if ( len <= 0 )
+	#else
 	    if ( len < 0 )
+	#endif
 			 break;
 	 }
 }
@@ -230,12 +241,32 @@ typedef struct {
 
 void st_underrun_007_func_001 (st_underrun_007_s_001 *s)
 {
+#ifdef __TRUSTINSOFT_BUGFIX__
+	 /*
+	  * FAULTY TEST:
+	  * The next line causes unintended Undefined Behavior because we pass an
+	  * invalid (not null-terminated) string to "strlen()". To fix it, we
+	  * terminate the string.
+	  */
+	 s->buf[1] = '\0';
+#endif
 	 int len = strlen(s->buf) - 1;
 	 char c = 0;
 	 for (;s->buf[len] != 'Z';len--)  
 	 {
         c = s->buf[len]; /*Tool should not detect this line as error*/ /* No Stack Under RUN error */
+	#ifdef __TRUSTINSOFT_BUGFIX__
+		/* 
+		 * FAULTY TEST:
+		 * This might be a misunderstanding of the for loop semantics.
+		 * In this code, the for loop condition "s->buf[len] != 'Z'" will be
+		 * evaluated one last time for "len" equal -1, thus causing unintended
+		 * Undefined Behavior.
+		 */
+		 if ( len <= 0 )
+	#else
 		 if ( len < 0 )
+	#endif
 			 break;
 	 }
          sink = c;

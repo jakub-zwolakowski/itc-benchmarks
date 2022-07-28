@@ -19,7 +19,13 @@ void overrun_st_001 ()
 {
 	char buf[5];
 	buf[4] = 1; /*Tool not should detect this line as error*/ /*No ERROR: buffer overrun */
+    #ifndef __TRUSTINSOFT_BUGFIX__
+        /*
+         * FAULTY TEST:
+         * The following line causes unintended Undefined Behavior.
+         */
         sink = buf[idx];
+    #endif
 }
 
 /*
@@ -30,7 +36,13 @@ void overrun_st_002 ()
 {
 	short buf[5];
 	buf[4] = 1; /*Tool not should detect this line as error*/ /*No ERROR: buffer overrun */
+    #ifndef __TRUSTINSOFT_BUGFIX__
+        /*
+         * FAULTY TEST:
+         * The following line causes unintended Undefined Behavior.
+         */
         sink = buf[idx];
+    #endif
 }
 
 /*
@@ -75,7 +87,13 @@ void overrun_st_006 ()
 {
 	float buf[5];
 	buf[4] = 1.0; /*Tool not should detect this line as error*/ /*No ERROR: buffer overrun */
+    #ifndef __TRUSTINSOFT_BUGFIX__
+        /*
+         * FAULTY TEST:
+         * The following line causes unintended Undefined Behavior.
+         */
         sink = buf[idx];
+    #endif
 }
 
 /*
@@ -86,7 +104,13 @@ void overrun_st_007 ()
 {
 	double buf[5];
 	buf[4] = 1.0; /*Tool not should detect this line as error*/ /*No ERROR: buffer overrun */
+    #ifndef __TRUSTINSOFT_BUGFIX__
+        /*
+         * FAULTY TEST:
+         * The following line causes unintended Undefined Behavior.
+         */
         sink = buf[idx];
+    #endif
 }
 
 /*
@@ -292,7 +316,13 @@ void overrun_st_022 ()
 	char *p;
 	p = buf;
 	*(p + 4) = 1; /*Tool not should detect this line as error*/ /*No ERROR: buffer overrun */
+    #ifndef __TRUSTINSOFT_BUGFIX__
+        /*
+         * FAULTY TEST:
+         * The following line causes unintended Undefined Behavior.
+         */
         sink = buf[idx];
+    #endif
 }
 
 /*
@@ -305,7 +335,13 @@ void overrun_st_023 ()
 	short *p;
 	p = buf;
 	*(p + 4) = 1; /*Tool not should detect this line as error*/ /*No ERROR: buffer overrun */
+    #ifndef __TRUSTINSOFT_BUGFIX__
+        /*
+         * FAULTY TEST:
+         * The following line causes unintended Undefined Behavior.
+         */
         sink = buf[idx];
+    #endif
 }
 
 /*
@@ -358,7 +394,13 @@ void overrun_st_027 ()
 	float *p;
 	p = buf;
 	*(p + 4) = 1; /*Tool not should detect this line as error*/ /*No ERROR: buffer overrun */
+    #ifndef __TRUSTINSOFT_BUGFIX__
+        /*
+         * FAULTY TEST:
+         * The following line causes unintended Undefined Behavior.
+         */
         sink = buf[idx];
+    #endif
 }
 
 /*
@@ -371,7 +413,13 @@ void overrun_st_028 ()
 	double *p;
 	p = buf;
 	*(p + 4) = 1; /*Tool not should detect this line as error*/ /*No ERROR: buffer overrun */
+    #ifndef __TRUSTINSOFT_BUGFIX__
+        /*
+         * FAULTY TEST:
+         * The following line causes unintended Undefined Behavior.
+         */
         sink = buf[idx];
+    #endif
 }
 
 /*
@@ -749,7 +797,13 @@ void overrun_st_053 ()
 	int *p;
 	p = (int*)buf;
 	*(p + 1) = 1; /*Tool not should detect this line as error*/ /*No ERROR: buffer overrun */
+    #ifndef __TRUSTINSOFT_BUGFIX__
+        /*
+         * FAULTY TEST:
+         * The following line causes unintended Undefined Behavior.
+         */
         sink = buf[idx];
+    #endif
 }
 
 /*

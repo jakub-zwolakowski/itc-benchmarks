@@ -37,3 +37,8 @@ config.status
 /missing
 /stamp-h1
 .deps
+
+# TrustInSoft
+.vscode
+*.pyc
+tis_misra_report

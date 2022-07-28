@@ -405,6 +405,12 @@ long wrong_arguments_func_pointer_014_func_002 (long a[],int max)
 	{
 		a[i] = i;
 	}
+#ifdef __TRUSTINSOFT_BUGFIX__
+	/* FAULTY TEST: Removing unintended Undefined Behavior.
+	   As after the loop the variable "i" is equal 5, "a[i]" is out of bound
+	   read Undefined Behavior. */
+	i = 4;
+#endif
 	return a[i];
 }
 

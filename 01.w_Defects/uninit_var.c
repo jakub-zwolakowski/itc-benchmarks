@@ -129,6 +129,16 @@ void uninit_var_008 ()
     {
     	data +=flag;/*Tool should detect this line as error*/ /*ERROR:Uninitialized Variable*/
     }
+#ifdef __TRUSTINSOFT_BUGFIX__
+	/* The condition is always false, so the control never reaches the
+	   statement triggering Undefined Behavior.
+	   
+	   Let us do the same with a true condition: */
+	while(uninit_var_008_func_001(flag)<0)
+	{
+		data += flag;
+	}
+#endif
 }
 
 /*

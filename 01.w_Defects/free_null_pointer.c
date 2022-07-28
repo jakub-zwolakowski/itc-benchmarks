@@ -106,7 +106,20 @@ void free_null_pointer_005 ()
 {
 	char *str = "This is a string";
 	free_null_pointer_005_func_001(strlen(str));
+#ifndef __TRUSTINSOFT_BUGFIX__
+	/*
+	 * FAULTY TEST:
+	 * The following line causes unintended Undefined Behavior.
+	 * See https://cigix.me/c17#7.1.4.p1:
+	 * 
+	 * 		If a function argument is described as being an array, the pointer
+	 * 		actually passed to the function shall have a value such that all
+	 * 		address computations and accesses to objects (that would be valid
+	 * 		if the pointer did point to the first element of such an array)
+	 * 		are in fact valid.
+	 */
 	strcpy(free_null_pointer_005_gbl_ptr,str);
+#endif
 	free(free_null_pointer_005_gbl_ptr); /* Tool should detect this line as error *//*ERROR:Freeing a NULL pointer*/
 	free_null_pointer_005_gbl_ptr = NULL;
 }
@@ -143,7 +156,20 @@ void free_null_pointer_006 ()
 	    {
 			(s+i)->buf = NULL;
 	    }
+	#ifndef __TRUSTINSOFT_BUGFIX__
+		/*
+		 * FAULTY TEST:
+		 * The following line causes unintended Undefined Behavior.
+		 * See https://cigix.me/c17#7.1.4.p1:
+		 * 
+		 * 		If a function argument is described as being an array, the pointer
+		 * 		actually passed to the function shall have a value such that all
+		 * 		address computations and accesses to objects (that would be valid
+		 * 		if the pointer did point to the first element of such an array)
+		 * 		are in fact valid.
+		 */
 	    strcpy((s+4)->buf,s1);
+	#endif
 	}
 	if(free_null_pointer_006_func_001(flag)==0)
 	{
@@ -192,6 +218,15 @@ void free_null_pointer_007()
 	free_null_pointer_007_gbl_doubleptr=NULL;
 goto label;
 
+#ifdef __TRUSTINSOFT_BUGFIX__
+	/*
+	 * FAULTY TEST:
+	 * The statement where the error should be detected can never be reached
+	 * in this program. A label must be added here and we must jump to it
+	 * later on in order to reach it.
+	 */
+my_label_UB:
+#endif
     if(free_null_pointer_007_func_001(flag)!=ZERO)
 	{
 		for(i=0;i<10;i++)
@@ -214,6 +249,9 @@ label:
     	{
     		free_null_pointer_007_func_002();
     	}
+#ifdef __TRUSTINSOFT_BUGFIX__
+	goto my_label_UB;
+#endif
 }
 
 /*
@@ -238,7 +276,20 @@ void free_null_pointer_008 ()
 	char *str = "This is a string";
 	char *str1=NULL;
 	free_null_pointer_008_func_001(strlen(str),&str1);
+#ifndef __TRUSTINSOFT_BUGFIX__
+	/*
+	 * FAULTY TEST:
+	 * The following line causes unintended Undefined Behavior.
+	 * See https://cigix.me/c17#7.1.4.p1:
+	 * 
+	 * 		If a function argument is described as being an array, the pointer
+	 * 		actually passed to the function shall have a value such that all
+	 * 		address computations and accesses to objects (that would be valid
+	 * 		if the pointer did point to the first element of such an array)
+	 * 		are in fact valid.
+	 */
 	strcpy(str1,str);
+#endif
 	free(str1);/* Tool should detect this line as error *//*ERROR:Freeing a NULL pointer*/
 	str1 = NULL;
 }
@@ -272,14 +323,33 @@ void free_null_pointer_009 ()
     free_null_pointer_009_func_001();
     for(i=0;i<5;i++)
     {
+	#ifndef __TRUSTINSOFT_BUGFIX__
+		/*
+		 * FAULTY TEST:
+		 * The following line causes unintended Undefined Behavior.
+		 * See https://cigix.me/c17#7.1.4.p1:
+		 * 
+		 * 		If a function argument is described as being an array, the pointer
+		 * 		actually passed to the function shall have a value such that all
+		 * 		address computations and accesses to objects (that would be valid
+		 * 		if the pointer did point to the first element of such an array)
+		 * 		are in fact valid.
+		 */
     	strcpy (free_null_pointer_009dst[i],"STRING");
+	#endif
     }
 	while(1)
 	{
 		for(i=0;i<5;i++)
 	    {
+		#ifndef __TRUSTINSOFT_BUGFIX__
+			/*
+			 * FAULTY TEST:
+			 * Both of the following lines cause unintended Undefined Behavior.
+			 */
 			free(free_null_pointer_009dst[i]);
 			free_null_pointer_009dst[i] = NULL;
+		#endif
 	    }
 	    break;
 	}
@@ -317,7 +387,20 @@ void free_null_pointer_010_func_002(char **dst, char (*src)[15])
 	int i;
 	for(i=0;i<5;i++)
 	{
+	#ifndef __TRUSTINSOFT_BUGFIX__	
+	   /*
+	    * FAULTY TEST:
+	    * The following line causes unintended Undefined Behavior.
+	    * See https://cigix.me/c17#7.1.4.p1:
+	    * 
+	    * 		If a function argument is described as being an array, the pointer
+	    * 		actually passed to the function shall have a value such that all
+	    * 		address computations and accesses to objects (that would be valid
+	    * 		if the pointer did point to the first element of such an array)
+	    * 		are in fact valid.
+	    */
 	   strcpy(*(dst+i),src[i]);
+	#endif
 	}
 }
 void free_null_pointer_010_func_003()
@@ -416,7 +499,13 @@ void free_null_pointer_011 ()
 	int ret;
 	free_null_pointer_011_u_001 *p;
 	p = free_null_pointer_011_func_001 ();
+#ifndef __TRUSTINSOFT_BUGFIX__	
+	/*
+	 * FAULTY TEST:
+	 * The following line causes unintended Undefined Behavior.
+	 */
 	ret = p->b;
+#endif
 	p = free_null_pointer_011_func_002 ();
 }
 
@@ -449,7 +538,15 @@ void free_null_pointer_012 ()
     if (free_null_pointer_012_func_001(0) == ZERO && MAX ==1)
     {
     	if(flag == 10)
+    #ifdef __TRUSTINSOFT_BUGFIX__	
+    	/*
+    	 * FAULTY TEST:
+    	 * The following line causes unintended Undefined Behavior.
+    	 */
+		;
+    #else
     	a = *(ptr+1);
+    #endif
     }
 
     if (free_null_pointer_012_func_001(0) == ZERO && MAX ==1)
@@ -480,7 +577,13 @@ void free_null_pointer_013 ()
 		{
 	       fptr = (double *)calloc(10, sizeof(double));
 		}
+	#ifndef __TRUSTINSOFT_ANALYZER__
+	    /*
+	     * FAULTY TEST:
+	     * The following line causes unintended Undefined Behavior.
+	     */
 	    *(fptr+3) = 50.5;
+	#endif
 	    *fp1 = fptr;
 	    i++;
 	}while(i>=0 && i<=1);
@@ -525,7 +628,16 @@ void free_null_pointer_014_func_002(int flag)
    int i;
    if (flag ==1)
    {
+	#ifdef __TRUSTINSOFT_BUGFIX__
+	    /*
+    	 * FAULTY TEST:
+    	 * The following for-loop causes Undefined Behavior.
+		 * Is it a typo?...
+    	 */
+	   for (i=1;i<1;i++)
+	#else
 	   for (i=0;i<1;i++)
+	#endif
 	   {
 		   *(free_null_pointer_014_gbl_s->p1) = arr[0];
 		   *(free_null_pointer_014_gbl_s->p2) = arr[1];

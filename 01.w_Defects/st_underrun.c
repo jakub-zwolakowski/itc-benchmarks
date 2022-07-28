@@ -190,6 +190,17 @@ void st_underrun_006_func_001 (st_underrun_006_s_001 s)
 
 	 int len = strlen(s.buf) - 1;
 	 char c;
+#ifdef __TRUSTINSOFT_ANALYZER__
+	 /* 
+	  * FAULTY TEST:
+	  * This might be a misunderstanding of the for loop semantics.
+	  * In this code the first value of the variable "len" when evaluating the
+	  * for loop's condition is 10. This causes unintended Undefined Behavior
+	  * when computing "s.buf[len]" - not a stack underrun, but a buffer
+	  * overrun. To fix this we need to make it start with 9.
+	  */
+     len--;
+#endif
 	 for (;s.buf[len] != 'Z';len--) /*Tool should detect this line as error*/ /* Error: Stack Under RUN error */
 	 {
          c = s.buf[len];
@@ -222,6 +233,15 @@ typedef struct {
 
 void st_underrun_007_func_001 (st_underrun_007_s_001 *s)
 {
+#ifdef __TRUSTINSOFT_BUGFIX__
+	 /*
+	  * FAULTY TEST:
+	  * The next line causes unintended Undefined Behavior because we pass an
+	  * invalid (not null-terminated) string to "strlen()". To fix it, we
+	  * terminate the string.
+	  */
+	 s->buf[1] = '\0';
+#endif
 	 int len = strlen(s->buf) - 1;
 	 char c;
 	 for (;s->buf[len] != 'Z';len--)

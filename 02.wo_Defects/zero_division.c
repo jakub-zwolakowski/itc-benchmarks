@@ -124,6 +124,16 @@ void zero_division_008 ()
 	float dividend = 1000.0;
 	float ret;
 	ret = dividend / 1.0; /*Tool should not detect this line as error*/ /* No ERROR:division by zero */
+#ifdef __TRUSTINSOFT_HELPER__
+	/*
+	 * FAULTY TEST:
+	 * Dividing by zero does not cause Undefined Behavior here, the result is
+	 * well-defined and equal positive infinity.
+	 * We can trigger Undefined Behavior if we cast it to int. It will not be
+	 * division by zero though.
+	 */
+	(void)((int) ret);
+#endif
 }
 
 /*

@@ -774,7 +774,16 @@ void dynamic_buffer_underrun_039()
 	{
 		for(i=-10;i<15;i++)
 		{
+		#ifdef __TRUSTINSOFT_BUGFIX__
+			/*
+			 * FAULTY TEST:
+			 * This must be a typo as the index variable "i" is never used.
+			 * Just guessing what should be here.
+			 */
+			memset(ptr_s1+i,1,sizeof(dynamic_buffer_underrun_s_008)); /*Tool should detect this line as error*/ /*ERROR:Buffer Underrun*/
+		#else
 			memset(ptr_s1,1,15*sizeof(dynamic_buffer_underrun_s_008)); /*Tool should detect this line as error*/ /*ERROR:Buffer Underrun*/
+		#endif
 		}
 	    memcpy(ptr_s2,ptr_s1,15*sizeof(dynamic_buffer_underrun_s_008));
 	    free(ptr_s1);

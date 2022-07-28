@@ -32,7 +32,16 @@ void uninit_memory_access_001 ()
 */
 void uninit_memory_access_002 ()
 {
+#ifdef __TRUSTINSOFT_BUGFIX__
+	/* 
+	 * FAULTY TEST:
+	 * The calloc function returns memory initialized with zeros, so a valid
+	 * string of length 0.
+	 */
+	double *a = (double *) malloc(3*sizeof(double));
+#else
 	double *a = (double *) calloc(3,sizeof(double));
+#endif
 	if(a!=NULL)
 	{
 	printf("%lf ",a[1]);/*Tool should detect this line as error*/ /*ERROR:Uninitialized Memory Access*/
@@ -63,7 +72,17 @@ void uninit_memory_access_003 ()
 void uninit_memory_access_004 ()
 {
 	short **ptr = NULL;
+#ifdef __TRUSTINSOFT_BUGFIX__
+	/* 
+	 * FAULTY TEST:
+	 * The calloc function returns memory initialized with zeros, so a valid
+	 * string of length 0.
+	 */
+	short *p1 = (short *) malloc(10*sizeof(short));
+#else
 	short *p1 = (short *) calloc(10,sizeof(short));
+#endif
+
 	short *p2 = NULL;
 	if(p1 !=NULL)
 	{
@@ -331,7 +350,16 @@ short pad;
 void uninit_memory_access_012()
 {
 	uninit_memory_access_012_s_001  *s1, s;
+#ifdef __TRUSTINSOFT_BUGFIX__
+	/* 
+	 * FAULTY TEST:
+	 * The calloc function returns memory initialized with zeros, so a valid
+	 * string of length 0.
+	 */
+    s1 = (uninit_memory_access_012_s_001*)malloc(1*sizeof(uninit_memory_access_012_s_001));
+#else
     s1 = (uninit_memory_access_012_s_001*)calloc(1,sizeof(uninit_memory_access_012_s_001));
+#endif
     if(s1 !=NULL)
     {
     s1->int_a = 10;
@@ -358,7 +386,16 @@ void uninit_memory_access_013 ()
   int i;
   uninit_memory_access_013_s_001 *s1, s;
 
+#ifdef __TRUSTINSOFT_BUGFIX__
+	/* 
+	 * FAULTY TEST:
+	 * The calloc function returns memory initialized with zeros, so a valid
+	 * string of length 0.
+	 */
+  s1 = (uninit_memory_access_013_s_001*)malloc(1*sizeof(uninit_memory_access_013_s_001));
+#else
   s1 = (uninit_memory_access_013_s_001*)calloc(1,sizeof(uninit_memory_access_013_s_001));
+#endif
   s1->int_a = 10;
   s1->int_c = 20;
 
@@ -413,7 +450,16 @@ void uninit_memory_access_014 ()
 	int ret;
 	uninit_memory_access_014_u_001 *p;
 	p = uninit_memory_access_014_func_001 ();
+#ifdef __TRUSTINSOFT_BUGFIX__
+	/*
+	 * FAULTY TEST:
+	 * This pointer comparison is Undefined Behavior if "p" is equal to "-1".
+	 * We must cast it to integer in order to make it valid.
+	 */
+	if((int)p != (int)NULL)
+#else
 	if(p != NULL)
+#endif
 	{
 	ret = p->b;/*Tool should detect this line as error*/ /*ERROR:Uninitialized Memory Access*/
 	free(p);

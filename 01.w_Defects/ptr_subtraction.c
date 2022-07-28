@@ -33,6 +33,18 @@ void ptr_subtraction_002 ()
 	int *ptr = &x;
 	char *buf ;
 	buf= (char *)(ptr+1); /*Tool should detect this line as error*/ /*ERROR:Incorrect pointer arithmetic*/
+#ifdef __TRUSTINSOFT_BUGFIX__
+	/* 
+	 * FAULTY TEST:
+	 * Creating a pointer one-past is fully defined correct pointer arithmetic
+	 * not causing Undefined Behavior.
+	 * See: https://cigix.me/c17#6.5.6.p7 and https://cigix.me/c17#6.5.6.p8
+	 * 
+	 * In order to trigger Undefined Behavior here, the one-past pointer must
+	 * be dereferenced:
+	 */
+	(void) (*((char *)(ptr+1)));
+#endif
 }
 
 /*

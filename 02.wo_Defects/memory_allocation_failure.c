@@ -590,7 +590,15 @@ void memory_allocation_failure_014 ()
     }
     else
     {
-    	   strcpy( dptr[1],"STRING TEST" );
+		#ifdef __TRUSTINSOFT_BUGFIX__
+			/* 
+			 * FAULTY TEST:
+			 * This string is too long and causes Undefined Behavior here.
+			 */
+		    strcpy( dptr[1],"STRING" );
+		#else
+		    strcpy( dptr[1],"STRING TEST" );
+		#endif
     	   if(1)
     	   {
         	   for (i = 0;i< 4; i++)

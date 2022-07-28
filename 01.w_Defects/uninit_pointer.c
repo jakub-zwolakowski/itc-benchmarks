@@ -273,8 +273,17 @@ void uninit_pointer_013 ()
 		{
 			for(j=0;j<3;j++)
 			{
+
 				*(*(ptr+i)+j)= arr[i][j];/*Tool should detect this line as error*/ /*ERROR:Uninitialized pointer*/
 			}
+		#ifdef __TRUSTINSOFT_BUGFIX__
+			/*
+			 * FAULTY TEST:
+			 * Leaving a part of 2D array uninitialized is not Undefined
+			 * Behavior. Only accessing this part is Undefined Behavior.
+			 */
+			(void) ptr[i][3];
+		#endif
 		    free(ptr[i]);
 		    ptr[i] = NULL;
 		}
@@ -299,7 +308,12 @@ void uninit_pointer_014_func_001 (int flag)
 	{
 		case 1:
 		{
+#ifdef __TRUSTINSOFT_BUGFIX__
+			/* The calloc function returns memory initialized with zeros. */
+			s = (uninit_pointer_014_s_001 *)malloc(sizeof(uninit_pointer_014_s_001));
+#else
 			s = (uninit_pointer_014_s_001 *)calloc(1,sizeof(uninit_pointer_014_s_001));
+#endif
 			if(s!=NULL)
 			{
 				s->a = 10;
@@ -309,6 +323,7 @@ void uninit_pointer_014_func_001 (int flag)
 		}
 		case 2:
 		{
+			s = (uninit_pointer_014_s_001 *)malloc(sizeof(uninit_pointer_014_s_001));
 			s = (uninit_pointer_014_s_001 *)calloc(1,sizeof(uninit_pointer_014_s_001));
 			if(s!=NULL)
 			{
@@ -332,6 +347,14 @@ void uninit_pointer_014 ()
 	if(s!=NULL)
 	{
 	    r = *s;/*Tool should detect this line as error*/ /*ERROR:Uninitialized pointer*/
+	#ifdef __TRUSTINSOFT_BUGFIX__
+		/*
+		 * FAULTY TEST:
+		 * Copying a structure with some uninitialized fields is not Undefined
+		 * Behavior. Accessing such a field is.
+		 */
+		(void) r.uninit;
+	#endif
 	    free(s);
 	}
 }

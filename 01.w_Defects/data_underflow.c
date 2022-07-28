@@ -167,7 +167,18 @@ void data_underflow_012 ()
 	int min = -2147483647;
 	int dlist[4] = {0, 1, -2, -1};
 	int ret;
+#ifdef __TRUSTINSOFT_BUGFIX__
+	/*
+	 * FAULTY TEST:
+	 * This must be a typo, cause "dlist[2]" is equal -2, so "- dlist[2]" is
+	 * actually "+ 2" which does not cause the underflow Undefined Behavior.
+	 * Guessing that instead of the "-" operator, the "+" operator was
+	 * intended.
+	 */
+	ret = min + dlist[2]; /*Tool should detect this line as error*/ /*ERROR:Data underflow*/
+#else
 	ret = min - dlist[2]; /*Tool should detect this line as error*/ /*ERROR:Data underflow*/
+#endif
         sink = ret;
 }
 

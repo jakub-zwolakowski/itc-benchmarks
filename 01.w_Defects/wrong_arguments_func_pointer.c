@@ -596,6 +596,11 @@ void wrong_arguments_func_pointer_018 ()
 
 	void (*fptr3)(wrong_arguments_func_pointer_018_s_001 st,wrong_arguments_func_pointer_018_s_001* st1);
 	fptr3 = wrong_arguments_func_pointer_018_func_004;
+#ifdef __TRUSTINSOFT_BUGFIX__
+	/* The control does not reach the Undefined Behavior if this variable is
+	   not equal MAX. */
+	func_pointer_018_global_set = MAX;
+#endif
 	fptr3(st,st1);
 }
 

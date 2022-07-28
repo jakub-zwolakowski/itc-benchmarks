@@ -110,7 +110,13 @@ void invalid_memory_access_003 ()
 	    if(i>=10)
 	    	break;
 	}
+    #ifndef __TRUSTINSOFT_BUGFIX__
+        /*
+         * FAULTY TEST:
+         * The following line causes unintended Undefined Behavior.
+         */
         psink = c;
+    #endif
 }
 
 /*

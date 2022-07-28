@@ -19,7 +19,23 @@ void ptr_subtraction_001 ()
     int buf1[10];
 	int buf2[5];
 	intptr_t offset;
+#ifdef __TRUSTINSOFT_BUGFIX__
+	/*
+	 * FAULTY TEST:
+	 * TODO
+	 * 
+	 * Actually "buf1 - buf2" is Undefined Behavior, as we are subtracting
+	 * pointers that do not point "to elements of the same array object, or
+	 * one past the last element of the array object".
+	 * See: https://cigix.me/c17#6.5.6.p9
+	 * 
+	 * However, even adding appropriate casts is not enough here, as there can
+	 * still be a signed overflow Undefined Behavior when subtracting these
+	 * values. */
+	offset = ((uintptr_t)buf1) - ((uintptr_t)buf2);
+#else
 	offset = buf1 - buf2; /*Tool should not detect this line as error*/ /*No ERROR:Incorrect pointer arithmetic*/
+#endif
         sink = offset;
 }
 

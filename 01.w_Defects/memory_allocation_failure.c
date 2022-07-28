@@ -178,7 +178,24 @@ void memory_allocation_failure_006_func_002()
 		memory_allocation_failure_006_gbl_doubleptr=(int**) malloc(10*sizeof(int*));
     	for(i=0;i<10;i++)
 	    {
+#ifdef __TRUSTINSOFT_BUGFIX__
+    		/*
+			 * FAULTY TEST:
+			 * The malloc's argument is not big enough to cause Undefined
+			 * Behavior.
+			 * 
+			 * 		MAX_10 * sizeof(int) == 429496730 * 4 == 1717986920
+			 * 
+			 * And the allowed maximum is 2147483647.
+			 * 
+			 * In order to trigger the Undefined Behavior, we need a slightly
+			 * larger value. Precisely: at least 429496728 (= 429496730 - 2)
+			 * larger.
+			 */
+    		memory_allocation_failure_006_gbl_doubleptr[i]=(int*) malloc((MAX_10*sizeof(int))+MAX_10-2);/*Tool should detect this line as error*/ /*ERROR:Memory allocation failure */
+#else
     		memory_allocation_failure_006_gbl_doubleptr[i]=(int*) malloc(MAX_10*sizeof(int));/*Tool should detect this line as error*/ /*ERROR:Memory allocation failure */
+#endif
     		memory_allocation_failure_006_gbl_doubleptr[i][0] =10;
 	    }
 	}
@@ -549,7 +566,16 @@ void memory_allocation_failure_014 ()
 	char  **dptr,a = 0;
 	double *ptr,b;
 	int i,j;
+#ifdef __TRUSTINSOFT_BUGFIX__
+	/* 
+	 * FAULTY TEST:
+	 * The control does not reach the Undefined Behavior if this variable is
+	 * equal 10.
+	 */
+	static int staticflag=11;
+#else
 	static int staticflag=10;
+#endif
     if (staticflag == 10)
     {
     	  	ptr= (double*) malloc(10*sizeof(double));

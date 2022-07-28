@@ -225,7 +225,17 @@ void littlemem_st_008_func_002 (int flag)
 		}
 		else if(flag == MAX_STR3)
 		{
+		#ifdef __TRUSTINSOFT_BUGFIX__
+			/*
+			 * FAULTY TEST:
+			 * This must be a typo caused by bad copy-paste.
+			 * The variable's name begins with "littlemem_st_007"
+			 * and the function's name begins with "littlemem_st_008".
+			 */
+			littlemem_st_008_s_001_gbl_str->c = 1; /*Tool should not detect this line as error*/ /*No ERROR:Little Memory or Overflow*/
+		#else
 			littlemem_st_007_s_001_gbl_str->c = 1; /*Tool should not detect this line as error*/ /*No ERROR:Little Memory or Overflow*/
+		#endif
 		}
 	    i++;
 	}
@@ -269,7 +279,17 @@ void littlemem_st_009_func_002 (int flag)
 		}
 		else if(flag == MAX_3)
 		{
+		#ifdef __TRUSTINSOFT_BUGFIX__
+			/*
+			 * FAULTY TEST:
+			 * This must be a typo caused by bad copy-paste.
+			 * The variable's name begins with "littlemem_st_007"
+			 * and the function's name begins with "littlemem_st_009".
+			 */
+			littlemem_st_009_s_001_gbl_str->c = 1; /*Tool should not detect this line as error*/ /*No ERROR:Little Memory or Overflow*/
+		#else
 			littlemem_st_007_s_001_gbl_str->c = 1; /*Tool should not detect this line as error*/ /*No ERROR:Little Memory or Overflow*/
+		#endif
 		}
 	    i++;
 	}while(i<2);
@@ -304,7 +324,17 @@ void littlemem_st_010_func_002 (int flag)
 {
 	goto label;
 	label:
+	#ifdef __TRUSTINSOFT_BUGFIX__
+		/*
+		* FAULTY TEST:
+		* This must be a typo caused by bad copy-paste.
+		* The variable's name begins with "littlemem_st_007"
+		* and the function's name begins with "littlemem_st_010".
+		*/
+		littlemem_st_010_s_001_gbl_str->c = 1; /*Tool should not detect this line as error*/ /*No ERROR:Little Memory or Overflow*/
+	#else
 		littlemem_st_007_s_001_gbl_str->c = 1; /*Tool should not detect this line as error*/ /*No ERROR:Little Memory or Overflow*/
+	#endif
 }
 
 void littlemem_st_010 ()
@@ -340,7 +370,17 @@ void littlemem_st_011_func_002 (int flag)
 	label:
 	while(i<2)
 	{
+	#ifdef __TRUSTINSOFT_BUGFIX__
+		/*
+		 * FAULTY TEST:
+		 * This must be a typo caused by bad copy-paste.
+		 * The variable's name begins with "littlemem_st_007"
+		 * and the function's name begins with "littlemem_st_011".
+		 */
+		littlemem_st_011_s_001_gbl_str->c = 1; /*Tool should not detect this line as error*/ /*No ERROR:Little Memory or Overflow*/
+	#else
 		littlemem_st_007_s_001_gbl_str->c = 1; /*Tool should not detect this line as error*/ /*No ERROR:Little Memory or Overflow*/
+	#endif
 	    i++;
 	}
 }

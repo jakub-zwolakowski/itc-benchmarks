@@ -719,7 +719,17 @@ void dynamic_buffer_underrun_037()
 	    	doubleptr[i]=(char*) malloc(10*sizeof(char));/*Tool should Not detect this line as error*/ /*No ERROR:Buffer Underrun*/
 	    	if(doubleptr[i]!=NULL)
 	    	{
+	    	#ifdef __TRUSTINSOFT_BUGFIX__
+	    	    /*
+	    	     * FAULTY TEST:
+	    	     * The following line causes unintended Undefined Behavior.
+	    	     * Accessing array index "[0][0]" instead of "[i][0]" seems to
+	    	     * be a typo.
+	    	     */
+	    	    doubleptr[i][0]='T';
+	    	#else
 	    	    doubleptr[0][0]='T';
+	    	#endif
 			    free(doubleptr[i]);
 	    	}
 	    }
@@ -773,7 +783,16 @@ void dynamic_buffer_underrun_039()
 	{
 		for(i=0;i<15;i++)
 		{
+		#ifdef __TRUSTINSOFT_BUGFIX__
+			/*
+			 * FAULTY TEST:
+			 * This must be a typo as the index variable "i" is never used.
+			 * Just guessing what should be here.
+			 */
+			memset(ptr_s1+i,1,sizeof(dynamic_buffer_underrun_s_008));/*Tool should Not detect this line as error*/ /*No ERROR:Buffer Underrun*/
+		#else
 			memset(ptr_s1,1,15*sizeof(dynamic_buffer_underrun_s_008));/*Tool should Not detect this line as error*/ /*No ERROR:Buffer Underrun*/
+		#endif
 		}
 	    memcpy(ptr_s2,ptr_s1,15*sizeof(dynamic_buffer_underrun_s_008));
 	    free(ptr_s1);

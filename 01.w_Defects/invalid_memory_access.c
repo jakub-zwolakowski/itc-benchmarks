@@ -466,6 +466,7 @@ int invalid_memory_access_014 (int flag)
 	int ret = 0,i;
 	int arr[]={3,8,9,10,4};
 	int *ptr = malloc(sizeof(int)*5);
+
 	if (flag == 1)
 	{
 		goto my_label;
@@ -473,6 +474,17 @@ int invalid_memory_access_014 (int flag)
 	if(ptr!=NULL)
 	{
    		goto my_label2;
+#ifdef __TRUSTINSOFT_BUGFIX__
+        /*
+         * FAULTY TEST:
+         * The following statement, causing Undefined Behavior, can never be
+         * reached in this program.
+         * A label must be added here and we must jump to it only when the
+         * memory area pointed to by "ptr" is already freed - this way the
+         * invalid memory access Undefined Behavior can actually be triggered.
+         */
+my_label_UB:
+#endif
         ret = ptr[2];/*Tool should detect this line as error*/ /*ERROR:Invalid memory access to already freed area*/
 
 	}
@@ -487,6 +499,9 @@ my_label:
 	    }
 my_label2:
     free(ptr);
+#ifdef __TRUSTINSOFT_BUGFIX__
+	goto my_label_UB;
+#endif
 	return ret;
 }
 

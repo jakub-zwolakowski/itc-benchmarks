@@ -24,6 +24,16 @@ void deletion_of_data_structure_sentinel_001()
 	{
 		foo[counter]='a'; /*Tool should detect this line as error*/ /*ERROR:Deletion of a data structure sentinel*/
 	}
+#ifdef __TRUSTINSOFT_ANALYZER__
+	/*
+	 * TRIGGERING THE UNDEFINED BEHAVIOR:
+	 * Deleting the string's terminator is NOT Undefined Behavior by itself.
+	 * This is perfectly valid C code with well-defined behavior.
+	 * However, passing such a non-null-terminated string to a standard
+	 * library function (like "strlen()") is indeed Undefined Behavior.
+	 */
+	(void) strlen(foo);
+#endif
 	free(foo);
 }
 
@@ -38,6 +48,17 @@ void deletion_of_data_structure_sentinel_002()
 	char str1[]="This is a string";
 	char str2[16];
 	memcpy(str2,str1,strlen(str1)); /*Tool should detect this line as error*/ /*ERROR:Deletion of a data structure sentinel*/
+#ifdef __TRUSTINSOFT_ANALYZER__
+	/*
+	 * TRIGGERING THE UNDEFINED BEHAVIOR:
+	 * Creating a string which is not null-terminated using memcpy is NOT
+	 * Undefined Behavior by itself.
+	 * This is perfectly valid C code with well-defined behavior.
+	 * However, passing such a non-null-terminated string to a standard
+	 * library function (like "strlen()") is indeed Undefined Behavior.
+	 */
+	(void) strlen(str2);
+#endif
 }
 
 /*
@@ -59,6 +80,16 @@ void deletion_of_data_structure_sentinel_003()
 	
 	ptr[i]='\0';
 	memcpy(str,ptr,16); /*Tool should detect this line as error*/ /*ERROR:Deletion of a data structure sentinel*/
+#ifdef __TRUSTINSOFT_BUGFIX__
+	/*
+	 * FAULTY TEST:
+	 * Differently than in two previous cases, both "ptr" and "str" are
+	 * completely valid null-terminated strings here. So even passing "str" to
+	 * the "strlen()" function would not trigger Undefined Behavior.
+	 * This is a completely correct and well defined piece of code!
+	 */
+	(void) strlen(str);
+#endif
 }
 
 extern volatile int vflag;

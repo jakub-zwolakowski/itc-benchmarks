@@ -10,6 +10,10 @@
 
 #include "HeaderFile.h"
 
+#ifdef __TRUSTINSOFT_BUGFIX__
+#include <tis_builtin.h>
+#endif
+
 int rand (void);
 
 /*
@@ -30,6 +34,18 @@ void memory_leak_001 ()
 		}
 		if(i>=10)
 		break;
+	#ifdef __TRUSTINSOFT_BUGFIX__
+		/*
+		* TRUSTINSOFT CONFIGURATION:
+		* Memory leaks are not Undefined Behavior.
+		* We need to ask the Analyzer to look for them specifically.
+		* 
+		* Here, if we want to spot the memory that was allocated and is not
+		* accessible anymore, we need to check it inside the loop, because
+		* this loop is infinite - so we cannot check it after the loop.
+		*/
+		tis_check_leak();
+	#endif
 	}
 }
 
@@ -471,6 +487,15 @@ void memory_leak_0017()
 	memory_leak_0017_gbl_doubleptr=NULL;
 goto label;
 
+#ifdef __TRUSTINSOFT_BUGFIX__
+	/*
+	 * FAULTY TEST:
+	 * The statement where the error should be detected can never be reached
+	 * in this program. A label must be added here and we must jump to it
+	 * later on in order to reach it.
+	 */
+my_label_UB:
+#endif
     if(memory_leak_0017_func_001(flag)==ZERO)
 	{
 		for(i=0;i<10;i++)
@@ -486,11 +511,17 @@ goto label;
 	    memory_leak_0017_gbl_doubleptr = NULL;
 	}
 
+#ifdef __TRUSTINSOFT_BUGFIX__
+	return;
+#endif
 label:
     	if(memory_leak_0017_func_001(flag)==ZERO)
     	{
     		memory_leak_0017_func_002();
     	}
+#ifdef __TRUSTINSOFT_BUGFIX__
+	goto my_label_UB;
+#endif
 }
 
 /*
@@ -634,4 +665,21 @@ void memory_leak_main ()
 		memory_leak_0018();
 	}
 
+#ifdef __TRUSTINSOFT_BUGFIX__
+	/*
+	 * TRUSTINSOFT CONFIGURATION:
+	 * Memory leaks are not Undefined Behavior.
+	 * We need to ask the Analyzer to look for them specifically.
+	 * 
+	 * Also, we assign null pointers to all the globals still potentially
+	 * pointing to allocated memory here. This way, if these zones of memory
+	 * were still allocated at this program point, now they are detached and
+	 * cannot be freed. This memory is unreleasable now and the Analyzer can
+	 * detect this as memory leak.
+	 */
+	vptr = NULL;
+	memory_leak_0016_gbl_ptr = NULL;
+	memory_leak_0017_gbl_doubleptr = NULL;
+	tis_check_leak();
+#endif
 }
