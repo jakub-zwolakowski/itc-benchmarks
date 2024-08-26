@@ -12,7 +12,7 @@
     "warn-unsigned-overflow": true,
     "cpp-extra-args": "-I../include",
     "files": [
-      "../trustinsoft/tis_stubs.c"
+      "../trustinsoft/stub.c"
     ]
   },
   "analyses": [
